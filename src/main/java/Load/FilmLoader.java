@@ -25,6 +25,8 @@ public class FilmLoader {
             ObjectMapper mapper = new ObjectMapper();
             Film film1 = new Film();
             //123456890
+            //1213123213123
+            //nazar
         } catch (IOException e) {
             e.printStackTrace();
         }
