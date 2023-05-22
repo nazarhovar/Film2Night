@@ -23,6 +23,7 @@ public class FilmLoader {
             connection.setRequestProperty("accept", "application/json");
 
             ObjectMapper mapper = new ObjectMapper();
+            //123456890
         } catch (IOException e) {
             e.printStackTrace();
         }
