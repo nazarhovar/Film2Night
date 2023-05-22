@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Film2Night:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Film2Night_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Film2Night/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Film2Night" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
