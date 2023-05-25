@@ -1,9 +1,10 @@
-package Servlets;
+package Service;
 
-import Actions.FilmActions;
+import Actions.Actions;
 import Daos.Top250Dao;
 import Entities.Top250;
 import Load.Top250Loader;
+import Util.ActionsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,24 +18,22 @@ import java.sql.SQLException;
 public class Top250Servlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmActions.getAction(request);
-        if (FilmActions.LoadTopAction.equals(FilmActions.Action))
+        ActionsUtil.getAction(request);
+        if (Actions.LOAD_TOP_ACTION.equals("action"))
             loadTop(response);
         else
-            FilmActions.filmNotFound(response);
+            ActionsUtil.filmNotFound(response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmActions.getAction(request);
-        if (FilmActions.GetTopAction.equals(FilmActions.Action)) {
-            try {
-                getTop(response);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+        ActionsUtil.getAction(request);
+        if (Actions.GET_TOP_ACTION.equals("action")) try {
+            getTop(response);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         else
-            FilmActions.filmNotFound(response);
+            ActionsUtil.filmNotFound(response);
     }
 
     private void getTop(HttpServletResponse response) throws IOException, SQLException {

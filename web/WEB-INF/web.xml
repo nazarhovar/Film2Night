@@ -13,7 +13,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>FilmServlet</servlet-name>
-        <servlet-class>Servlets.FilmServlet</servlet-class>
+        <servlet-class>Service.FilmServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FilmServlet</servlet-name>
@@ -21,7 +21,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>Top250Servlet</servlet-name>
-        <servlet-class>Servlets.Top250Servlet</servlet-class>
+        <servlet-class>Service.Top250Servlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Top250Servlet</servlet-name>

@@ -1,4 +1,4 @@
-package Servlets;
+package Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.SQLException;
 
-import Actions.FilmActions;
+import Actions.Actions;
 import Load.FilmLoader;
 import Daos.FilmDao;
 import Entities.Film;
+import Util.ActionsUtil;
 
 @WebServlet(name = "FilmServlet")
 public class FilmServlet extends HttpServlet {
@@ -20,19 +21,19 @@ public class FilmServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmActions.getAction(request);
-        if (FilmActions.LoadFilmAction.equals(FilmActions.Action))
+        ActionsUtil.getAction(request);
+        if (Actions.LOAD_FILM_ACTION.equals("action"))
             loadFilm(response);
         else
-            FilmActions.filmNotFound(response);
+            ActionsUtil.filmNotFound(response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        FilmActions.getAction(request);
-        if (FilmActions.GetFilmAction.equals(FilmActions.Action))
+        ActionsUtil.getAction(request);
+        if (Actions.GET_FILM_ACTION.equals("action"))
             getFilm(request, response);
         else
-            FilmActions.filmNotFound(response);
+            ActionsUtil.filmNotFound(response);
     }
 
     private void getFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
