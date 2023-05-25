@@ -1,5 +1,7 @@
 package Entities;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.sql.ResultSet;
 import java.util.Objects;
 
@@ -7,10 +9,14 @@ public class Top250 {
     private int id;
     private String name;
 
-    public Top250() {
+    public Top250(int id, String name) {
     }
 
     public Top250(ResultSet resultSet) {
+    }
+
+    public Top250() {
+
     }
 
     public int getId() {
@@ -48,5 +54,15 @@ public class Top250 {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public String toJSON() {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{}";
+        }
     }
 }

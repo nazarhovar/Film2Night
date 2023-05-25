@@ -21,7 +21,11 @@ public class Film {
     private Timestamp lastSync;
     private String isBlocked;
 
-    public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, String isBlocked) {
+    public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, Set<String> countries, Set<String> genres, String isBlocked) {
+    }
+
+    public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, String countries, String isBlocked) {
+
     }
 
     public Film() {

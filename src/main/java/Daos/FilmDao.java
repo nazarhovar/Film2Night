@@ -12,7 +12,7 @@ public class FilmDao {
 
     public static void addFilm(Film film) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "", "");
             PreparedStatement statement = connection.prepareStatement("INSERT INTO Film (kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount,webUrl,year,filmLength,countries,genres,lastSync,isBlocked) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
             statement.setString(1, String.valueOf(film.getKinopoiskId()));
             statement.setString(2,film.getNameOriginal());
@@ -34,7 +34,7 @@ public class FilmDao {
 
     public void deleteFilm(int id) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+            Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;database=Film2Night", "", "");
             PreparedStatement statement = connection.prepareStatement("DELETE FROM Film WHERE kinopoiskId = ?");
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -46,7 +46,7 @@ public class FilmDao {
     public static Film getFilmById(int id) {
         Film film = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+            Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;database=Film2Night", "", "");
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Film WHERE kinopoiskId = ?");
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();

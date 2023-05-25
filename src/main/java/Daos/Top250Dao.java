@@ -1,11 +1,9 @@
 package Daos;
 import Entities.Top250;
 
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Top250Dao {
     private Connection connection;
@@ -14,9 +12,9 @@ public class Top250Dao {
         this.connection = connection;
     }
 
-    public List<Top250> getTOP_250() throws SQLException {
+    public static List<Top250> getTop250() throws SQLException {
         List<Top250> topFilms = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;database=Film2Night", "", "");
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM TOP_250");
             if (resultSet.next()) {
@@ -26,8 +24,8 @@ public class Top250Dao {
         return topFilms;
     }
 
-    public void insertTOP_250(Top250 topFilm) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+    public static void addTop250(Top250 topFilm) throws SQLException {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;database=Film2Night", "", "");
              PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TOP_250 (id,name) VALUES (?, ?)")) {
             preparedStatement.setInt(1, topFilm.getId());
             preparedStatement.setString(2, topFilm.getName());
@@ -35,8 +33,8 @@ public class Top250Dao {
         }
     }
 
-    public void updateTOP_250(Top250 topFilm) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/Film2Night", "root", "password");
+    public void updateTop250(Top250 topFilm) throws SQLException {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;database=Film2Night", "", "");
              PreparedStatement preparedStatement = connection.prepareStatement("UPDATE TOP_250 SET name=? WHERE id=?")) {
             preparedStatement.setInt(1, topFilm.getId());
             preparedStatement.setString(2, topFilm.getName());
@@ -44,7 +42,7 @@ public class Top250Dao {
         }
     }
 
-    private Top250 resultSetToTOP_250(ResultSet resultSet) throws SQLException {
+    private Top250 resultSetToTop250(ResultSet resultSet) throws SQLException {
         Top250 topFilm = new Top250();
         topFilm.setId(resultSet.getInt("id"));
         topFilm.setName(resultSet.getString("name"));

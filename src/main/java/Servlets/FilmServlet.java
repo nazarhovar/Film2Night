@@ -13,7 +13,7 @@ import Load.FilmLoader;
 import Daos.FilmDao;
 import Entities.Film;
 
-@WebServlet(name = "FilmId")
+@WebServlet(name = "FilmServlet")
 public class FilmServlet extends HttpServlet {
 
     public FilmServlet() throws SQLException {
@@ -22,7 +22,7 @@ public class FilmServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         FilmActions.getAction(request);
         if (FilmActions.LoadFilmAction.equals(FilmActions.Action))
-            loadFilm(request, response);
+            loadFilm(response);
         else
             FilmActions.filmNotFound(response);
     }
@@ -36,8 +36,8 @@ public class FilmServlet extends HttpServlet {
     }
 
     private void getFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        FilmActions.id = FilmActions.getFilmId(request);
-        Film film = FilmDao.getFilmById(FilmActions.id);
+        int filmId = Integer.parseInt(request.getParameter("id"));
+        Film film = FilmDao.getFilmById(filmId);
         if (film == null)
             response.getWriter().println("Film not found");
           else {
@@ -46,10 +46,9 @@ public class FilmServlet extends HttpServlet {
         }
     }
 
-    private void loadFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        FilmActions.id = FilmActions.getFilmId(request);
+    private void loadFilm(HttpServletResponse response) throws IOException {
         try {
-            Film film = (Film) FilmLoader.loadFilm(FilmActions.id);
+            Film film = (Film) FilmLoader.loadFilm();
             FilmDao.addFilm(film);
             response.getWriter().println("Film loaded successfully");
         } catch (Exception e) {
