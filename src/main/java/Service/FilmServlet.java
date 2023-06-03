@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface FilmServlet {
     void getFilm(HttpServletRequest request, HttpServletResponse response) throws IOException;
-    void loadFilm(HttpServletResponse response) throws IOException;
+    void loadFilm(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

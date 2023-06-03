@@ -1,8 +1,5 @@
 package Entities;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,19 +15,49 @@ public class Film {
     private int filmLength;
     private Set<String> countries = new HashSet<>();
     private Set<String> genres = new HashSet<>();
-    private Timestamp lastSync;
-    private String isBlocked;
+//    private int country_id;
+//    private int genre_id;
+//    private Timestamp lastSync;
+//    private String isBlocked;
 
     public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, Set<String> countries, Set<String> genres, String isBlocked) {
-    }
-
-    public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, String countries, String isBlocked) {
-
     }
 
     public Film() {
 
     }
+
+    public Set<String> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(Set<String> countries) {
+        this.countries = countries;
+    }
+
+    public Set<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<String> genres) {
+        this.genres = genres;
+    }
+
+//        public int getCountry_id() {
+//        return country_id;
+//    }
+//
+//    public void setCountry_id(int country_id) {
+//        this.country_id = country_id;
+//    }
+//
+//    public int getGenre_id() {
+//        return genre_id;
+//    }
+//
+//    public void setGenre_id(int genre_id) {
+//        this.genre_id = genre_id;
+//    }
 
     public int getKinopoiskId() {
         return kinopoiskId;
@@ -96,37 +123,22 @@ public class Film {
         this.filmLength = filmLength;
     }
 
-    public Set<String> getCountries() {
-        return countries;
-    }
 
-    public void setCountries(Set<String> countries) {
-        this.countries = countries;
-    }
-
-    public Set<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<String> genres) {
-        this.genres = genres;
-    }
-
-    public Timestamp getLastSync() {
-        return lastSync;
-    }
-
-    public void setLastSync(Timestamp lastSync) {
-        this.lastSync = lastSync;
-    }
-
-    public String getIsBlocked() {
-        return isBlocked;
-    }
-
-    public void setIsBlocked(String isBlocked) {
-        this.isBlocked = isBlocked;
-    }
+//    public Timestamp getLastSync() {
+//        return lastSync;
+//    }
+//
+//    public void setLastSync(Timestamp lastSync) {
+//        this.lastSync = lastSync;
+//    }
+//
+//    public String getIsBlocked() {
+//        return isBlocked;
+//    }
+//
+//    public void setIsBlocked(String isBlocked) {
+//        this.isBlocked = isBlocked;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -137,14 +149,14 @@ public class Film {
                 year == film.year && filmLength == film.filmLength && Objects.equals(nameOriginal, film.nameOriginal) &&
                 Objects.equals(posterUrl, film.posterUrl) && Objects.equals(ratingKinopoisk, film.ratingKinopoisk) &&
                 Objects.equals(webUrl, film.webUrl) && Objects.equals(countries, film.countries) &&
-                Objects.equals(genres, film.genres) && Objects.equals(lastSync, film.lastSync) &&
-                Objects.equals(isBlocked, film.isBlocked);
+                Objects.equals(genres, film.genres) /*&& Objects.equals(lastSync, film.lastSync) &&
+                Objects.equals(isBlocked, film.isBlocked)*/;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount, webUrl,
-                year, filmLength, countries, genres, lastSync, isBlocked);
+                year, filmLength, countries, genres /*, lastSync, isBlocked*/);
     }
 
     @Override
@@ -159,20 +171,10 @@ public class Film {
                 ", webUrl='" + webUrl + '\'' +
                 ", year=" + year +
                 ", filmLength=" + filmLength +
-                ", countries=" + countries +
-                ", genres=" + genres +
-                ", lastSync='" + lastSync + '\'' +
-                ", is_blocked='" + isBlocked + '\'' +
+                ", country_id=" + countries +
+                ", genre_id=" + genres +
+//                ", lastSync='" + lastSync + '\'' +
+//                ", is_blocked='" + isBlocked + '\'' +
                 '}';
-    }
-
-    public String toJSON() {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{}";
-        }
     }
 }

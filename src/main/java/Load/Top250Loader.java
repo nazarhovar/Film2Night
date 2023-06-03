@@ -2,9 +2,6 @@ package Load;
 
 import Entities.Top250;
 import Parsers.Parser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,13 +22,6 @@ public class Top250Loader extends Parser {
             connection.setRequestProperty("X-API-KEY",API_KEY);
             connection.connect();
 
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode tree = mapper.readTree(connection.getInputStream());
-            JsonNode filmsNode = tree.path("films");
-            for (JsonNode filmNode : filmsNode) {
-                Top250 top250 = parseTopFromJSON(filmNode);
-                filmsTop.add(top250);
-            }
             connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();

@@ -8,51 +8,58 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.SQLException;
 
-import Actions.Actions;
+import ActionsEnum.Actions;
 import Load.FilmLoader;
 import Daos.Impl.FilmDaoImpl;
 import Entities.Film;
 import Service.FilmServlet;
 import Util.ActionsUtil;
 
-@WebServlet(name = "FilmServlet")
+@WebServlet(name = "FilmServlet" , urlPatterns = {"/FilmServlet"})
 public class FilmServletImpl extends HttpServlet implements FilmServlet {
 
     public FilmServletImpl() throws SQLException {
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ActionsUtil.getAction(request);
-        if (Actions.LOAD_FILM_ACTION.equals("action"))
-            loadFilm(response);
-        else
-            ActionsUtil.filmNotFound(response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ActionsUtil.getAction(request);
-        if (Actions.GET_FILM_ACTION.equals("action"))
-            getFilm(request, response);
-        else
-            ActionsUtil.filmNotFound(response);
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = ActionsUtil.getAction(request);
+            if (action == null) {
+                response.getWriter().println("Action is null");
+                return;
+            }
+            switch (Actions.valueOf(action)) {
+                case getFilm:
+                    getFilm(request, response);
+                    break;
+                case loadFilm:
+                    loadFilm(request,response);
+                    break;
+                default:
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    ActionsUtil.filmNotFound(response);
+            }
     }
 
     public void getFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int filmId = Integer.parseInt(request.getParameter("id"));
-        Film film = FilmDaoImpl.getFilmById(filmId);
+        FilmDaoImpl filmDao = new FilmDaoImpl();
+        Film film = filmDao.getFilmById(ActionsUtil.getFilmId(request));
         if (film == null)
             response.getWriter().println("Film not found");
           else {
             response.setContentType("application/json");
-            response.getWriter().println(film.toJSON());
+            response.getWriter().println(film);
         }
     }
 
-    public void loadFilm(HttpServletResponse response) throws IOException {
+    public void loadFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            Film film = (Film) FilmLoader.loadFilm();
-            FilmDaoImpl.addFilm(film);
-            response.getWriter().println("Film loaded successfully");
+            FilmLoader filmLoader = new FilmLoader();
+            Film film = filmLoader.loadFilm(ActionsUtil.getFilmId(request));
+
+            FilmDaoImpl filmDao = new FilmDaoImpl();
+            filmDao.addFilm(film);
+
+            response.getWriter().println("Film loaded successfully " + film.getNameOriginal());
         } catch (Exception e) {
             response.getWriter().println("Error loading film");
         }
