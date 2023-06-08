@@ -6,7 +6,6 @@ import Entities.Film;
 import Parsers.Parser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -24,7 +23,6 @@ public class FilmLoader {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(connection.getInputStream());
-//        System.out.println(jsonNode);
         Film film = Parser.parseFilmFromJSON(jsonNode);
         System.out.println(film);
 

@@ -3,12 +3,10 @@ package Entities;
 import java.sql.ResultSet;
 import java.util.Objects;
 
+
 public class Top250 {
     private int id;
     private String name;
-
-    public Top250(int id, String name) {
-    }
 
     public Top250(ResultSet resultSet) {
     }
@@ -21,12 +19,12 @@ public class Top250 {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
@@ -37,8 +35,9 @@ public class Top250 {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Top250 top_250 = (Top250) o;
-        return id == top_250.id && Objects.equals(name, top_250.name);
+        Top250 top250 = (Top250) o;
+        return id == top250.id &&
+                Objects.equals(name, top250.name);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class Top250 {
 
     @Override
     public String toString() {
-        return "TOP_250{" +
+        return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

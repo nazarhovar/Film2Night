@@ -12,10 +12,13 @@ public class Top250DaoImpl implements Top250Dao {
     public List<Top250> getTop250() throws SQLException {
         List<Top250> topFilms = new ArrayList<>();
         try (Connection connection = ConnectorToDB.getConnection();
-             Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM TOP_250");
-            if (resultSet.next()) {
-                topFilms.add(new Top250(resultSet));
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM top250");
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Top250 top250 = new Top250();
+                top250.setId(resultSet.getInt("id"));
+                top250.setName(resultSet.getString("name"));
+                topFilms.add(top250);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -23,15 +26,18 @@ public class Top250DaoImpl implements Top250Dao {
         return topFilms;
     }
 
-    public void addTop250(Top250 topFilm) throws SQLException {
+    public void addTop250(List<Top250> topFilms) throws SQLException {
         try (Connection connection = ConnectorToDB.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO TOP_250 (id,name) VALUES (?, ?)")) {
-            preparedStatement.setInt(1, topFilm.getId());
-            preparedStatement.setString(2, topFilm.getName());
-            preparedStatement.executeUpdate();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO Top250 (id, name) VALUES (?, ?)")) {
+            for (Top250 topFilm : topFilms) {
+                statement.setInt(1, topFilm.getId());
+                statement.setString(2, topFilm.getName());
+                statement.executeUpdate();
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        System.out.println("Top250 saved to database");
     }
 }
 

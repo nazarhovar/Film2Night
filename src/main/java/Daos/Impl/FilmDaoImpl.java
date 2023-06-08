@@ -4,18 +4,26 @@ import Daos.FilmDao;
 import Entities.Film;
 
 import java.sql.*;
-
-
+import java.util.Set;
 
 public class FilmDaoImpl implements FilmDao {
+    private final CountryDaoImpl countryDao;
+    private final GenreDaoImpl genreDao;
+
+    public FilmDaoImpl() {
+        this.countryDao = new CountryDaoImpl();
+        this.genreDao = new GenreDaoImpl();
+    }
 
     public void addFilm(Film film) {
         try {
             Connection connection = ConnectorToDB.getConnection();
 
-            int countryId = CountryDaoImpl.getCountryIdByName(String.valueOf(film.getCountries()));
+            int filmId = film.getKinopoiskId();
+            Set<String> countries = film.getCountries();
+            Set<String> genres = film.getGenres();
 
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO film (kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount,webUrl,year,filmLength,country_id) VALUES (?,?,?,?,?,?,?,?,?)");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO film (kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount,webUrl,year,filmLength) VALUES (?,?,?,?,?,?,?,?)");
             statement.setString(1, String.valueOf(film.getKinopoiskId()));
             statement.setString(2,film.getNameOriginal());
             statement.setString(3,film.getPosterUrl());
@@ -23,12 +31,12 @@ public class FilmDaoImpl implements FilmDao {
             statement.setString(5, String.valueOf(film.getRatingKinopoiskVoteCount()));
             statement.setString(6,film.getWebUrl());
             statement.setString(7, String.valueOf(film.getYear()));
-            statement.setString(8, String.valueOf(film.getFilmLength()));
-            statement.setInt(9, countryId);
-//            statement.setString(10, String.valueOf(film.getGenre()));
-//            statement.setString(9, String.valueOf(film.getLastSync()));
-//            statement.setString(10,film.getIsBlocked());
+            statement.setString(8, String.valueOf(film.getFilmLength()));;
             statement.executeUpdate();
+
+            countryDao.linkFilmWithCountries(filmId, countries, connection);
+            genreDao.linkFilmWithGenres(filmId, genres, connection);
+
             System.out.println("Film saved to database");
         } catch (SQLException | ClassNotFoundException throwables) {
             throwables.printStackTrace();
@@ -51,7 +59,7 @@ public class FilmDaoImpl implements FilmDao {
         return film;
     }
 
-    private static Film resultSetToFilm(ResultSet resultSet) throws SQLException {
+    private Film resultSetToFilm(ResultSet resultSet) throws SQLException, ClassNotFoundException {
         Film film = new Film();
         film.setKinopoiskId(resultSet.getInt("kinopoiskId"));
         film.setNameOriginal(resultSet.getString("nameOriginal"));
@@ -61,8 +69,10 @@ public class FilmDaoImpl implements FilmDao {
         film.setWebUrl(resultSet.getString("webUrl"));
         film.setYear(resultSet.getInt("year"));
         film.setFilmLength(resultSet.getInt("filmLength"));
-//        film.setLastSync(resultSet.getTimestamp("lastSync"));
-//        film.setIsBlocked(resultSet.getString("isBlocked"));
+        Set<String> countries = countryDao.getCountriesByFilmId(film.getKinopoiskId());
+        film.setCountries(countries);
+        Set<String> genres = genreDao.getGenresByFilmId(film.getKinopoiskId());
+        film.setGenres(genres);
         return film;
     }
 }

@@ -18,7 +18,10 @@ import Util.ActionsUtil;
 @WebServlet(name = "FilmServlet" , urlPatterns = {"/FilmServlet"})
 public class FilmServletImpl extends HttpServlet implements FilmServlet {
 
-    public FilmServletImpl() throws SQLException {
+    private final FilmDaoImpl filmDao;
+
+    public FilmServletImpl() {
+        filmDao = new FilmDaoImpl();
     }
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,13 +38,11 @@ public class FilmServletImpl extends HttpServlet implements FilmServlet {
                     loadFilm(request,response);
                     break;
                 default:
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     ActionsUtil.filmNotFound(response);
             }
     }
 
     public void getFilm(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        FilmDaoImpl filmDao = new FilmDaoImpl();
         Film film = filmDao.getFilmById(ActionsUtil.getFilmId(request));
         if (film == null)
             response.getWriter().println("Film not found");
@@ -56,10 +57,9 @@ public class FilmServletImpl extends HttpServlet implements FilmServlet {
             FilmLoader filmLoader = new FilmLoader();
             Film film = filmLoader.loadFilm(ActionsUtil.getFilmId(request));
 
-            FilmDaoImpl filmDao = new FilmDaoImpl();
             filmDao.addFilm(film);
 
-            response.getWriter().println("Film loaded successfully " + film.getNameOriginal());
+            response.getWriter().println("Film loaded successfully: " + film.getNameOriginal());
         } catch (Exception e) {
             response.getWriter().println("Error loading film");
         }

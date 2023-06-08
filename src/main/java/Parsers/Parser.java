@@ -1,19 +1,28 @@
 package Parsers;
 
-import Daos.Impl.CountryDaoImpl;
 import Entities.Top250;
 import Entities.Film;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Parser {
 
-    protected static Top250 parseTopFromJSON() {
-        Top250 top250 = new Top250();
-        return top250;
+    protected static List<Top250> parseTopFromJSON(JsonNode jsonNode) {
+        List<Top250> top250List = new ArrayList<>();
+        JsonNode filmsNode = jsonNode.get("films");
+        if (filmsNode != null && filmsNode.isArray()) {
+            for (JsonNode filmNode : filmsNode) {
+                int filmId = filmNode.get("filmId").asInt();
+                String nameEn = filmNode.get("nameEn").asText();
+                Top250 top250 = new Top250();
+                top250.setId(filmId);
+                top250.setName(nameEn);
+                top250List.add(top250);
+            }
+        }
+        System.out.println("Fields Top250 loaded correctly");
+        return top250List;
     }
 
     public static Film parseFilmFromJSON(JsonNode jsonNode) {
