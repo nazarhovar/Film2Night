@@ -14,6 +14,7 @@ public class Top250Loader extends Parser {
     private static final String API_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS";
     private static final String API_KEY = "e6a7be3b-3fc1-4e73-a048-b4bb298621b8";
 
+
 public static List<Top250> loadTop (int page) throws IOException {
             URL url = new URL(API_URL + "&page=" + page);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -28,5 +29,4 @@ public static List<Top250> loadTop (int page) throws IOException {
             System.out.println(top250);
             return top250;
     }
-
 }
