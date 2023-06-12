@@ -16,17 +16,5 @@ public class Top250Loader extends Parser {
 
 
 public static List<Top250> loadTop (int page) throws IOException {
-            URL url = new URL(API_URL + "&page=" + page);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("accept", "application/json");
-            connection.setRequestProperty("X-API-KEY",API_KEY);
-            connection.connect();
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(connection.getInputStream());
-            List<Top250> top250 = Parser.parseTopFromJSON(jsonNode);
-            System.out.println(top250);
-            return top250;
-    }
 }
