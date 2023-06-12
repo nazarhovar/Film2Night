@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Top250DaoImpl implements Top250Dao {
-
     public List<Top250> getTop250() throws SQLException {
         List<Top250> topFilms = new ArrayList<>();
         try (Connection connection = ConnectorToDB.getConnection();

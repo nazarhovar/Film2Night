@@ -46,7 +46,7 @@ public class GenreDaoImpl implements GenreDao{
         Set<String> genres = new HashSet<>();
         Connection connection = ConnectorToDB.getConnection();
         String query = "SELECT genre.name FROM genre " +
-                "JOIN film_genre ON film_genre.genre_id = genre.id " +
+                "INNER JOIN film_genre ON film_genre.genre_id = genre.id " +
                 "WHERE film_genre.film_id = ?";
 
         PreparedStatement statement = connection.prepareStatement(query);

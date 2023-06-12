@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CountryDaoImpl implements CountryDao {
+
     public Integer getCountryIdByName(String countryName, Connection connection) throws SQLException {
         String query = "SELECT id FROM country WHERE name = ?";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -45,7 +46,7 @@ public class CountryDaoImpl implements CountryDao {
         Set<String> countries = new HashSet<>();
         Connection connection = ConnectorToDB.getConnection();
         String query = "SELECT country.name FROM country " +
-                "JOIN film_country ON film_country.country_id = country.id " +
+                "INNER JOIN film_country ON film_country.country_id = country.id " +
                 "WHERE film_country.film_id = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, filmId);
@@ -56,5 +57,4 @@ public class CountryDaoImpl implements CountryDao {
         }
         return countries;
     }
-
 }
