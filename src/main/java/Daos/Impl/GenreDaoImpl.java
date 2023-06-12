@@ -11,17 +11,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GenreDaoImpl implements GenreDao {
-
-  public Integer getGenreIdByName(String genreName, Connection connection) throws SQLException {
-    String query = "SELECT id FROM genre WHERE name = ?";
-    PreparedStatement statement = connection.prepareStatement(query);
-    statement.setString(1, genreName);
-    ResultSet resultSet = statement.executeQuery();
-    if (resultSet.next()) {
-        return resultSet.getInt("id");
+    public Integer getGenreIdByName(String genreName, Connection connection) throws SQLException {
+        String query = "SELECT id FROM genre WHERE name = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, genreName);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt("id");
+        }
+        return null;
     }
-    return null;
-}
 
     public void linkFilmWithGenres(int filmId, Set<String> genres, Connection connection) throws SQLException {
         if (genres != null && !genres.isEmpty()) {
@@ -42,20 +41,21 @@ public class GenreDaoImpl implements GenreDao {
         }
     }
 
-public Set<String> getGenresByFilmId(int filmId) throws SQLException, ClassNotFoundException {
-    Set<String> genres = new HashSet<>();
-    Connection connection = ConnectorToDB.getConnection();
-    String query = "SELECT genre.name FROM genre " +
-            "JOIN film_genre ON film_genre.genre_id = genre.id " +
-            "WHERE film_genre.film_id = ?";
+    public Set<String> getGenresByFilmId(int filmId) throws SQLException, ClassNotFoundException {
+        Set<String> genres = new HashSet<>();
+        Connection connection = ConnectorToDB.getConnection();
+        String query = "SELECT genre.name FROM genre " +
+                "JOIN film_genre ON film_genre.genre_id = genre.id " +
+                "WHERE film_genre.film_id = ?";
 
-    PreparedStatement statement = connection.prepareStatement(query);
-    statement.setInt(1, filmId);
-    ResultSet resultSet = statement.executeQuery();
-    while (resultSet.next()) {
-        String genreName = resultSet.getString("name");
-        genres.add(genreName);
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, filmId);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            String genreName = resultSet.getString("name");
+            genres.add(genreName);
+        }
+        return genres;
     }
-    return genres;
-}
+
 }
