@@ -1,5 +1,6 @@
 package Entities;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,12 +16,30 @@ public class Film {
     private int filmLength;
     private Set<String> countries = new HashSet<>();
     private Set<String> genres = new HashSet<>();
+    private Timestamp lastSync;
+    private String isBlocked;
 
     public Film(int kinopoiskId, String nameOriginal, String posterUrl, double ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, Set<String> countries, Set<String> genres, String isBlocked) {
     }
 
     public Film() {
 
+    }
+
+    public Timestamp getLastSync() {
+        return lastSync;
+    }
+
+    public void setLastSync(Timestamp lastSync) {
+        this.lastSync = lastSync;
+    }
+
+    public String getIsBlocked() {
+        return isBlocked;
+    }
+
+    public void setIsBlocked(String isBlocked) {
+        this.isBlocked = isBlocked;
     }
 
     public Set<String> getCountries() {
@@ -103,30 +122,34 @@ public class Film {
         this.filmLength = filmLength;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Film film = (Film) o;
-        return kinopoiskId == film.kinopoiskId && ratingKinopoiskVoteCount == film.ratingKinopoiskVoteCount &&
-                year == film.year && filmLength == film.filmLength && Objects.equals(nameOriginal, film.nameOriginal) &&
-                Objects.equals(posterUrl, film.posterUrl) && Objects.equals(ratingKinopoisk, film.ratingKinopoisk) &&
-                Objects.equals(webUrl, film.webUrl) && Objects.equals(countries, film.countries) &&
-                Objects.equals(genres, film.genres);
+        return kinopoiskId == film.kinopoiskId &&
+                ratingKinopoiskVoteCount == film.ratingKinopoiskVoteCount &&
+                year == film.year &&
+                filmLength == film.filmLength &&
+                nameOriginal.equals(film.nameOriginal) &&
+                posterUrl.equals(film.posterUrl) &&
+                ratingKinopoisk.equals(film.ratingKinopoisk) &&
+                webUrl.equals(film.webUrl) &&
+                countries.equals(film.countries) &&
+                genres.equals(film.genres) &&
+                lastSync.equals(film.lastSync) &&
+                isBlocked.equals(film.isBlocked);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount, webUrl,
-                year, filmLength , countries, genres /*, lastSync, isBlocked*/);
+        return Objects.hash(kinopoiskId, nameOriginal, posterUrl, ratingKinopoisk, ratingKinopoiskVoteCount, webUrl, year, filmLength, countries, genres, lastSync, isBlocked);
     }
 
     @Override
     public String toString() {
         return "Film{" +
-
-                ", kinopoiskId=" + kinopoiskId +
+                "kinopoiskId=" + kinopoiskId +
                 ", nameOriginal='" + nameOriginal + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
                 ", ratingKinopoisk=" + ratingKinopoisk +
@@ -136,6 +159,8 @@ public class Film {
                 ", filmLength=" + filmLength +
                 ", countries=" + countries +
                 ", genres=" + genres +
+                ", lastSync=" + lastSync +
+                ", isBlocked='" + isBlocked + '\'' +
                 '}';
     }
 }

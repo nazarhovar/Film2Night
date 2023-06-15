@@ -13,7 +13,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>FilmServlet</servlet-name>
-        <servlet-class>Service.Impl.FilmServletImpl</servlet-class>
+        <servlet-class>Controller.FilmServletImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>FilmServlet</servlet-name>
@@ -21,7 +21,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>Top250Servlet</servlet-name>
-        <servlet-class>Service.Impl.Top250ServletImpl</servlet-class>
+        <servlet-class>Controller.Top250ServletImpl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Top250Servlet</servlet-name>

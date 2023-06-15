@@ -4,11 +4,14 @@ import Entities.Top250;
 import Entities.Film;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Parser {
 
-    protected static List<Top250> parseTopFromJSON(JsonNode jsonNode) {
+    public static List<Top250> parseTopFromJSON(JsonNode jsonNode) {
         List<Top250> top250List = new ArrayList<>();
         JsonNode filmsNode = jsonNode.get("films");
         if (filmsNode != null && filmsNode.isArray()) {
@@ -35,7 +38,6 @@ public class Parser {
         film.setWebUrl(jsonNode.get("webUrl").asText());
         film.setYear(jsonNode.get("year").asInt());
         film.setFilmLength(jsonNode.get("filmLength").asInt());
-        System.out.println("Fields loaded correctly");
 
         JsonNode countriesNode = jsonNode.get("countries");
         if (countriesNode != null && countriesNode.isArray()) {
@@ -62,6 +64,10 @@ public class Parser {
             }
             film.setGenres(Collections.singleton(genres.toString()));
         }
+
+        String lastSyncString = jsonNode.get("lastSync").asText();
+        LocalDateTime lastSync = LocalDateTime.parse(lastSyncString, DateTimeFormatter.ISO_DATE_TIME);
+        film.setLastSync(Timestamp.valueOf(lastSync));
 
         return film;
     }

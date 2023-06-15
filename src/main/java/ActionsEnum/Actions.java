@@ -4,5 +4,7 @@ public enum Actions {
     getFilm,
     loadFilm,
     getTop,
-    loadTop
+    loadTop,
+    twoDaysFilms,
+    scheduler
 }

@@ -7,54 +7,70 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CountryDaoImpl implements CountryDao {
 
-    public Integer getCountryIdByName(String countryName, Connection connection) throws SQLException {
-        String query = "SELECT id FROM country WHERE name = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, countryName);
+    private static final String GET_ID = "SELECT id,name FROM country WHERE name IN (?)";
+    private static final String INSERT = "INSERT INTO film_country (film_id, country_id) VALUES (?, ?)";
+    private static final String GET_COUNTRIES = "SELECT country.name FROM country " +
+            "INNER JOIN film_country ON film_country.country_id = country.id " +
+            "WHERE film_country.film_id = ?";
+
+    public Map<String, Integer> getCountryIdByName(List<String> countryNames, Connection connection) throws SQLException {
+        Map<String, Integer> countryIdMap = new HashMap<>();
+        PreparedStatement statement = connection.prepareStatement(GET_ID);
+
+        String countryNameString = String.join(",", countryNames);
+        statement.setString(1, countryNameString);
+
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt("id");
+        while (resultSet.next()) {
+            countryIdMap.put(resultSet.getString("name"), resultSet.getInt("id"));
         }
-        return null;
+
+        return countryIdMap;
     }
 
     public void linkFilmWithCountries(int filmId, Set<String> countries, Connection connection) throws SQLException {
-        if (countries != null && !countries.isEmpty()) {
-            String query = "INSERT INTO film_country (film_id, country_id) VALUES (?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            for (String country : countries) {
-                String[] countryNames = country.split(",");
-                for (String countryName : countryNames) {
-                    countryName = countryName.trim();
-                    Integer countryId = getCountryIdByName(countryName, connection);
-                    if (countryId != null) {
-                        statement.setInt(1, filmId);
-                        statement.setInt(2, countryId);
-                        statement.executeUpdate();
-                    }
-                }
-            }
+        if (countries == null || countries.isEmpty()) {
+            return;
         }
+
+        PreparedStatement statement = connection.prepareStatement(INSERT);
+
+        countries.stream()
+                .flatMap(country -> Arrays.stream(country.split(",")))
+                .map(String::trim)
+                .forEach(countryName -> {
+                    try {
+                        Map<String, Integer> countryIdMap = getCountryIdByName(Collections.singletonList(countryName), connection);
+                        Integer countryId = countryIdMap.get(countryName);
+                        if (countryId != null) {
+                            statement.setInt(1, filmId);
+                            statement.setInt(2, countryId);
+                            statement.addBatch();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        statement.executeBatch();
     }
 
     public Set<String> getCountriesByFilmId(int filmId) throws SQLException, ClassNotFoundException {
         Set<String> countries = new HashSet<>();
         Connection connection = ConnectorToDB.getConnection();
-        String query = "SELECT country.name FROM country " +
-                "INNER JOIN film_country ON film_country.country_id = country.id " +
-                "WHERE film_country.film_id = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
+
+        PreparedStatement statement = connection.prepareStatement(GET_COUNTRIES);
         statement.setInt(1, filmId);
+
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            String countryName = resultSet.getString("name");
-            countries.add(countryName);
+            countries.add(resultSet.getString("name"));
         }
+
         return countries;
     }
 }
