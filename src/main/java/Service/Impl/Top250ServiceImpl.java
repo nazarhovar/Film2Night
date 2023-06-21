@@ -5,9 +5,9 @@ import Entities.Top250;
 import Load.Top250Loader;
 import Service.Top250Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -23,22 +23,23 @@ public class Top250ServiceImpl implements Top250Service {
         if (top250 == null)
             response.getWriter().println("Top not found");
         else {
+            response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
             response.getWriter().println(top250);
         }
     }
 
-    public void loadTop(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        String pageStr = request.getParameter("page");
-        int page = 1;
-        if (pageStr != null && !pageStr.isEmpty()) {
-            page = Integer.parseInt(pageStr);
-        }
+    public void loadTop(HttpServletResponse response) throws IOException, SQLException {
+        List<Top250> top250 = Top250Loader.loadTop();
 
-        List<Top250> top250 = Top250Loader.loadTop(page);
-
+        top250Dao.deleteTop250();
         top250Dao.addTop250(top250);
 
-        response.getWriter().println("Top250 loaded successfully" + top250);
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.println("Top250 loaded successfully:");
+        for (Top250 film : top250) {
+            writer.println(film);
+        }
     }
 }

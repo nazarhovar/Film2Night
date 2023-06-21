@@ -39,7 +39,7 @@ public class Top250ServletImpl extends HttpServlet {
                 break;
             case loadTop:
                 try {
-                    top250ServiceImpl.loadTop(request, response);
+                    top250ServiceImpl.loadTop(response);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

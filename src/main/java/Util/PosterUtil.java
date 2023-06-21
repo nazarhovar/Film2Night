@@ -13,6 +13,7 @@ public class PosterUtil {
     public static void savePosterLocally(Film film, String outputDirectory) {
         try {
             File outputFile = new File(outputDirectory, film.getKinopoiskId() + ".jpg");
+
             InputStream inputStream = new URL(film.getPosterUrl()).openStream();
 
             FileOutputStream outputStream = new FileOutputStream(outputFile);

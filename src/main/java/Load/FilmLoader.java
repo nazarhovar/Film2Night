@@ -13,7 +13,7 @@ public class FilmLoader {
 
     public Film loadFilm(int filmId) throws IOException {
         String endpoint = String.valueOf(filmId);
-        JsonNode jsonNode = apiConnector.fetchData(endpoint);
+        JsonNode jsonNode = apiConnector.ConnectToAPI(endpoint);
         System.out.println(Parser.parseFilmFromJSON(jsonNode));
         return Parser.parseFilmFromJSON(jsonNode);
     }

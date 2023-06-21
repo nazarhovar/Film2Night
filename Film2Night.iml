@@ -7,9 +7,12 @@
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
-          <root url="file://$MODULE_DIR$/web" relative="/" />
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots />
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="Osmorc" name="OSGi">
@@ -34,7 +37,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/main/sqljdbc_12.2/rus/mssql-jdbc-12.2.0.jre11.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../sqljdbc_12.2/rus/mssql-jdbc-12.2.0.jre11.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -43,7 +46,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/main/sqljdbc_12.2/rus/mssql-jdbc-12.2.0.jre8.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../sqljdbc_12.2/rus/mssql-jdbc-12.2.0.jre8.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
