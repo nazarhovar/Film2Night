@@ -23,8 +23,11 @@ public class FilmScheduler implements Runnable {
             Film film = filmLoader.loadFilm(currentFilmId);
 
             filmDao.addFilm(film);
+            //idea
+//          String outputDirectory = "C:\\main\\iTechArt\\Posters";
 
-            String outputDirectory = "C:\\main\\iTechArt\\Posters";
+            //docker
+            String outputDirectory = "/app/Posters";
             PosterUtil.savePosterLocally(film, outputDirectory);
         } catch (Exception e) {
             System.out.println("Error loading film");

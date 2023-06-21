@@ -9,8 +9,9 @@ import java.util.List;
 
 public class Top250DaoImpl implements Top250Dao {
 
-    private static final String SELECT = "SELECT * FROM top250";
+    private static final String SELECT = "SELECT * FROM Top250";
     private static final String INSERT = "INSERT INTO Top250 (id, name) VALUES (?, ?)";
+    private static final String DELETE = "DELETE FROM Top250";
 
     public List<Top250> getTop250() throws SQLException {
         List<Top250> topFilms = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Top250DaoImpl implements Top250Dao {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         return topFilms;
     }
 
@@ -41,6 +43,15 @@ public class Top250DaoImpl implements Top250Dao {
             e.printStackTrace();
         }
         System.out.println("Top250 saved to database");
+    }
+
+    public void deleteTop250() throws SQLException {
+        try (Connection connection = ConnectorToDB.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE)) {
+            statement.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 

@@ -65,6 +65,7 @@ public class FilmDaoImpl implements FilmDao {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         return film;
     }
 
@@ -81,6 +82,7 @@ public class FilmDaoImpl implements FilmDao {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
         return twoDaysFilms;
     }
 
@@ -100,6 +102,7 @@ public class FilmDaoImpl implements FilmDao {
         film.setGenres(genres);
         film.setLastSync(resultSet.getTimestamp("lastSync"));
         film.setIsBlocked(resultSet.getString("isBlocked"));
+
         return film;
     }
 }

@@ -24,7 +24,7 @@ public class Parser {
                 top250List.add(top250);
             }
         }
-        System.out.println("Fields Top250 loaded correctly");
+
         return top250List;
     }
 

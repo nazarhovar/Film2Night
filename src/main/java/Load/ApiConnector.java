@@ -16,7 +16,7 @@ public class ApiConnector {
         this.apiKey = apiKey;
     }
 
-    public JsonNode fetchData(String endpoint) throws IOException {
+    public JsonNode ConnectToAPI(String endpoint) throws IOException {
         URL url = new URL(apiUrl + endpoint);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
