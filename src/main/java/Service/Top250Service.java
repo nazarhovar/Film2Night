@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public interface Top250Servlet {
+public interface Top250Service {
     void getTop(HttpServletResponse response) throws IOException, SQLException;
     void loadTop(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException;
 }
