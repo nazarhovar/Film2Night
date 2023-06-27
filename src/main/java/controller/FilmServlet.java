@@ -22,8 +22,8 @@ public class FilmServlet extends HttpServlet {
         super.init();
         try {
             filmServiceImpl = new FilmServiceImpl();
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Error initializing film servlet: " + e.getMessage());
         }
     }
 

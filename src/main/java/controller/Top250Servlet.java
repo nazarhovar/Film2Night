@@ -22,8 +22,8 @@ public class Top250Servlet extends HttpServlet {
         super.init();
         try {
             top250ServiceImpl = new Top250ServiceImpl();
-        } catch (SQLException | ClassNotFoundException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Error initializing top250 servlet: " + e.getMessage());
         }
     }
 
