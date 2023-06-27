@@ -22,7 +22,10 @@ public class Film {
     private Timestamp lastSync;
     private String isBlocked;
 
-    public Film(int kinopoiskId, String nameOriginal, String posterUrl, Float ratingKinopoisk, int ratingKinopoiskVoteCount, String webUrl, int year, int filmLength, Set<Country> countries, Set<Genre> genres, String isBlocked) {
+    public Film(int kinopoiskId, String nameOriginal, String posterUrl,
+                Float ratingKinopoisk, int ratingKinopoiskVoteCount,
+                String webUrl, int year, int filmLength, Set<Country> countries,
+                Set<Genre> genres, String isBlocked) {
         this.kinopoiskId = kinopoiskId;
         this.nameOriginal = nameOriginal;
         this.posterUrl = posterUrl;

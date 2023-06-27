@@ -12,11 +12,8 @@ public class DBConnector implements Connector {
 
     public DBConnector() {}
 
-    public static DBConnector getInstance() throws SQLException, ClassNotFoundException {
+    public static DBConnector getInstance() {
         if (instance == null) {
-            instance = new DBConnector();
-        }
-        else if (instance.getConnection().isClosed()) {
             instance = new DBConnector();
         }
 
