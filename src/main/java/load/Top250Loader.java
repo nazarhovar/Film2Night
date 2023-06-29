@@ -3,25 +3,36 @@ package load;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Top250;
 import com.fasterxml.jackson.databind.JsonNode;
+import util.PropertiesReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Top250Loader {
-    private static final String API_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS";
-    private static final String API_KEY = "bfe97887-f460-439e-85fd-68410221af94";
-    private static final ConnectorAPI CONNECTOR_TO_API = new ConnectorAPI(API_URL, API_KEY);
+    private static final String CONFIG_FILE = "/app/web/api.properties";
+    private static final String TOP_250_URL = "api.top250Url";
+    private static final String API_KEY = "api.apiKey";
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final String top250Url;
+    private final String apiKey;
 
-    public static List<Top250> loadTop() throws IOException {
+    public Top250Loader() {
+        Properties properties = PropertiesReader.loadProperties(CONFIG_FILE);
+        top250Url = properties.getProperty(TOP_250_URL);
+        apiKey = properties.getProperty(API_KEY);
+    }
+
+    public List<Top250> loadTop() throws IOException {
         List<Top250> top250 = new ArrayList<>();
 
         for (int currentPage = 1; currentPage <= 13; currentPage++) {
             String endpoint = "&page=" + currentPage;
 
-            CONNECTOR_TO_API.connectToAPI(endpoint);
-            JsonNode jsonNode = CONNECTOR_TO_API.getJsonResponse();
+            ConnectorAPI connectorToApi = new ConnectorAPI(top250Url, apiKey);
+            connectorToApi.connectToAPI(endpoint);
+            JsonNode jsonNode = connectorToApi.getJsonResponse();
 
             JsonNode filmsNode = jsonNode.get("films");
             if (filmsNode != null) {

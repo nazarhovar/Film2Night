@@ -1,16 +1,23 @@
 package connections;
 
+import util.PropertiesReader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DBConnector implements Connector {
     private static DBConnector instance;
-    private static final String DB_URL = "jdbc:mysql://film2nightv2-my-web-app-db-1:3306/Film2NightMySQL2";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "1234";
+    private static final String CONFIG_FILE = "/app/web/db.properties";
+    private static final String DB_URL = "db.url";
+    private static final String DB_USER = "db.user";
+    private static final String DB_PASSWORD = "db.password";
+    private final Properties dbProperties;
 
-    public DBConnector() {}
+    private DBConnector() {
+        dbProperties = PropertiesReader.loadProperties(CONFIG_FILE);
+    }
 
     public static DBConnector getInstance() {
         if (instance == null) {
@@ -21,7 +28,11 @@ public class DBConnector implements Connector {
     }
 
     public Connection getConnection() throws SQLException, ClassNotFoundException {
+        String dbUrl = dbProperties.getProperty(DB_URL);
+        String dbUser = dbProperties.getProperty(DB_USER);
+        String dbPassword = dbProperties.getProperty(DB_PASSWORD);
+
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 }

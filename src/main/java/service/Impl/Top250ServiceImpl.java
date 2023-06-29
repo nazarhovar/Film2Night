@@ -3,7 +3,6 @@ package service.Impl;
 import daos.Impl.Top250DaoImpl;
 import entities.Top250;
 import load.Top250Loader;
-import scheduler.Top250Scheduler;
 import service.Top250Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 public class Top250ServiceImpl implements Top250Service {
     private final Top250DaoImpl top250Dao;
@@ -38,17 +35,13 @@ public class Top250ServiceImpl implements Top250Service {
     }
 
     public void loadTop(HttpServletResponse response) throws IOException, SQLException {
-        List<Top250> top250 = Top250Loader.loadTop();
+        Top250Loader top250Loader = new Top250Loader();
+        List<Top250> top250 = top250Loader.loadTop();
 
         top250Dao.deleteTop250();
         top250Dao.addTop250(top250);
 
         response.setCharacterEncoding("UTF-8");
         response.getWriter().println("Top250 loaded successfully");
-    }
-
-    public void scheduleFilmLoading() {
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new Top250Scheduler(), 0, 360, TimeUnit.SECONDS);
     }
 }
