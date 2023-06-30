@@ -18,6 +18,9 @@ services:
       - my-web-app-db
     volumes:
       - ./Posters:/app/Posters
+      - ./web/db.properties:/app/web/db.properties
+      - ./web/api.properties:/app/web/api.properties
+      - ./web/app.properties:/app/web/app.properties
     user: root
 
 volumes:

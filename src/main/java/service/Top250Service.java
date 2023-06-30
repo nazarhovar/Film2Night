@@ -7,5 +7,4 @@ import java.sql.SQLException;
 public interface Top250Service {
     void getTop(HttpServletResponse response) throws IOException, SQLException;
     void loadTop(HttpServletResponse response) throws IOException, SQLException;
-    void scheduleFilmLoading();
 }
